@@ -1,0 +1,89 @@
+{{ define "title_failure" -}}
+💥 [ERROR]: Backup Failure: {{ .Config.BackupStopDuringBackupLabel }}
+{{- end }}
+
+{{ define "body_failure" -}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>💥 [ERROR]: Backup Failure: {{ .Config.BackupStopDuringBackupLabel }}</title>
+  </head>
+  <style type="text/css">
+    body {
+      font-family: Consolas, monospace;;
+      font-size: 12px;
+    }
+    table {
+      border-width: 1px;
+      border-color: #3A3A3A;
+      border-style: dotted;
+      border-collapse: collapse;
+    }
+    table th {
+      border-width: 1px;
+      padding: 8px;
+      border-style: dotted;
+      border-color: #3A3A3A;
+      background-color: #E8E8E8;
+    }
+    table td {
+      border-width: 1px;
+      padding: 8px;
+      border-style: dotted;
+      border-color: #3A3A3A;
+      background-color: #ffffff;
+    }
+  </style>
+  <body>
+    <table>
+      <tr>
+        <th colspan="2">INFO</th>
+      </tr>
+      <tr>
+        <td><b>ℹ️ Name</b></td>
+        <td>{{ .Config.BackupStopDuringBackupLabel }} ({{ .Config.BackupLatestSymlink }})</td>
+      </tr>
+      <tr>
+        <td><b>💥 Error</b></td>
+        <td>{{ .Error }}</td>
+      </tr>
+      <tr>
+        <td><b>▶️ Start time</b></td>
+        <td>{{ .Stats.StartTime | formatTime }}</td>
+      </tr>
+      <tr>
+        <td><b>⏹️ End time</b></td>
+        <td>{{ .Stats.EndTime | formatTime }}</td>
+      </tr>
+      <tr>
+        <td><b>⌛ Took time</b></td>
+        <td>{{ .Stats.TookTime }}</td>
+      </tr>
+      <tr>
+        <td><b>🛑 Stopped containers</b></td>
+        <td>{{ .Stats.Containers.Stopped }}/{{ .Stats.Containers.All }} ({{ .Stats.Containers.StopErrors }} errors)</td>
+      </tr>
+      <tr>
+        <td><b>⚖️ Backup size</b></td>
+        <td>{{ .Stats.BackupFile.Size | formatBytesBin }} / {{ .Stats.BackupFile.Size | formatBytesDec }}</td>
+      </tr>
+      <tr>
+        <td><b>🗑️ Pruned backups</b></td>
+        <td>{{ .Stats.Storages.Local.Pruned }}/{{ .Stats.Storages.Local.Total }} ({{ .Stats.Storages.Local.PruneErrors }} errors)</td>
+      </tr>
+    </table>
+    <br>
+    <br>
+    <table>
+      <tr>
+        <th>LOG</th>
+      </tr>
+      <tr>
+        <td><pre>{{ .Stats.LogOutput }}<pre></td>
+      </tr>
+    </table>
+  </body>
+</html>
+{{- end }}
+
